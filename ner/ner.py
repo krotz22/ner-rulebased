@@ -1,11 +1,10 @@
 import streamlit as st
 import spacy
-from spacy.tokens import Span
 from spacy import displacy
 from spacy.language import Language
 import re
 
-# Define the custom NER component (same as the code provided)
+# Custom NER component
 @Language.component("custom_ner_component")
 def custom_ner_component(doc):
     patterns = {
@@ -44,8 +43,11 @@ def custom_ner_component(doc):
         },
         "si_and_time_units": r'''
             \b\d+(?:[\.,]\d+)?\s*
-            (?:meter|m|kilogram|kg|second|s|ampere|A|kelvin|K|mole|mol|candela|cd|joule|J|watt|W|newton|N|pascal|Pa|hertz|Hz|coulomb|C|volt|V|ohm|Ω|siemens|S|farad|F|henry|H|lux|lx|becquerel|Bq|gray|Gy|sievert|Sv|liter|L|l|radian|rad|steradian|sr|dB|decibel
-            |hour|h|minute|min|second|s|kN)\b
+            (?:  
+                meter|m|kilogram|kg|second|s|ampere|A|kelvin|K|mole|mol|candela|cd|joule|J|watt|W|newton|N|pascal|Pa|hertz|Hz|coulomb|C|volt|V|ohm|Ω|siemens|S|farad|F|henry|H|lux|lx|becquerel|Bq|gray|Gy|sievert|Sv|liter|L|l|radian|rad|steradian|sr|dB|decibel
+                | 
+                hour|h|minute|min|second|s  
+            )\b
         '''
     }
     
@@ -71,7 +73,6 @@ def custom_ner_component(doc):
                     entities.append(span)
     
     entities = sorted(entities, key=lambda span: (span.start, -(span.end - span.start)))
-    
     filtered_entities = []
     seen_tokens = set()
     for ent in entities:
@@ -82,21 +83,16 @@ def custom_ner_component(doc):
     doc.ents = filtered_entities
     return doc
 
-# Initialize spaCy model and add custom component
+# Initialize the spaCy model
 nlp = spacy.blank("en")
 nlp.add_pipe("custom_ner_component", last=True)
 
-# Streamlit App
-st.title("Custom NER with spaCy")
+# Streamlit app
+st.title("Rule-Based NER Visualization")
 
-# Text input
-user_input = st.text_area("Enter Text:", value="")
+text = st.text_area("Enter Text:", height=200)
 
-if user_input:
-    doc = nlp(user_input)
-
-  
-    # Visualize entities
-    st.subheader("Entity Visualization")
+if st.button("Process Text"):
+    doc = nlp(text)
     html = displacy.render(doc, style="ent", jupyter=False)
-    st.write(html, unsafe_allow_html=True)
+    st.write(f"<div style='font-size: 1.2em;'>{html}</div>", unsafe_allow_html=True)
