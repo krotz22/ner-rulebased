@@ -15,7 +15,7 @@ def custom_ner_component(doc):
             "thousands_comma": r'\b\d{1,3}(,\d{3})+\b',
             "thousands_space": r'\b\d{1,3}( \d{3})+\b',
             "ordinal": r'\b\d+(?:st|nd|rd|th)\b',
-            "cardinal": r'\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b',
+            "cardinal": r'\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)\b',
             "roman": r'\b[MCDLXVI]+\b',
             "percentage": r'\b\d+%|\b\d+\spercent\b',
             "range_dash": r'\b\d+\s?[-–]\s?\d+\b',
@@ -43,12 +43,17 @@ def custom_ner_component(doc):
         },
         "si_and_time_units": r'''
             \b\d+(?:[\.,]\d+)?\s*
-            (?:  
-                meter|m|kilogram|kg|second|s|ampere|A|kelvin|K|mole|mol|candela|cd|joule|J|watt|W|newton|N|pascal|Pa|hertz|Hz|coulomb|C|volt|V|ohm|Ω|siemens|S|farad|F|henry|H|lux|lx|becquerel|Bq|gray|Gy|sievert|Sv|liter|L|l|radian|rad|steradian|sr|dB|decibel
-                | 
-                hour|h|minute|min|second|s  
+            (?:
+                [kKmM]?  # Optional prefixes for kilo, mega, milli, etc.
+                (?:  
+                    meter|metre|m|gram|g|kilogram|kg|second|s|ampere|A|kelvin|K|mole|mol|candela|cd|joule|J|watt|W|newton|N|pascal|Pa|hertz|Hz|coulomb|C|volt|V|ohm|Ω|siemens|S|farad|F|henry|H|lux|lx|becquerel|Bq|gray|Gy|sievert|Sv|liter|L|l|radian|rad|steradian|sr|decibel|dB
+                )  
+                |
+                (?:hour|h|minute|min|second|s)  # Time units
             )\b
         '''
+
+       
     }
     
     entities = []
