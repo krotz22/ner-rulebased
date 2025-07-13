@@ -42,14 +42,13 @@ def custom_ner_component(doc):
             "named_materials": r'\b(?:Supplementary|Appendix|Audio|Video)\s+(?:Materials?|Files?|Clips?|Tracks?|Figures?|Tables?|Appendices?)\s+[A-Z]\b',
         },
         "operators": {
-    "plus": r'\+',
-    "minus": r'-',
-    "multiply": r'(?<!\*)\*(?!\*)',       # Single * (but not **)
-    "power": r'\*\*|\^',                  # Matches ** or ^
-    "divide": r'/',
-    "modulus": r'%',
-}
-,
+            "plus": r'\+',
+            "minus": r'-',
+            "multiply": r'(?<!\*)\*(?!\*)',       # Single * (but not **)
+            "power": r'\*\*|\^',                  # Matches ** or ^
+            "divide": r'/',
+            "modulus": r'%',
+            },
         "si_and_time_units": r'''
             \b\d+(?:[\.,]\d+)?\s*
             (?:
